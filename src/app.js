@@ -6,9 +6,9 @@ const fs = require('fs/promises');
 async function copyArch() {
   const meusArgumentos = process.argv.slice(2); // ['arq.tx', 'copia.txt']
 
-  if (meusArgumentos.length < 2) {
+  if (meusArgumentos.length !== 2) {
     // eslint-disable-next-line no-console
-    console.error('apenas 1 argumento passado');
+    console.error('The number of arguments is different from two.');
 
     return;
   }
@@ -33,13 +33,13 @@ async function copyArch() {
 
     if (stats.isFile() === false) {
       // eslint-disable-next-line no-console
-      console.error('Não é um arquivo');
+      console.error('Not a file');
 
       return;
     }
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('o arquivo não existe ou nao pode ser acessado', error);
+    console.error('The file does not exist or cannot be accessed.', error);
 
     return;
   }
@@ -49,7 +49,7 @@ async function copyArch() {
 
     if (destinoStats.isDirectory()) {
       // eslint-disable-next-line no-console
-      console.error('não pode ser um diretório');
+      console.error('It cannot be a directory.');
 
       return;
     }
@@ -58,12 +58,10 @@ async function copyArch() {
   }
 
   try {
-    const contentOrigem = await fs.readFile(caminhoOrigemAbs, 'utf-8');
-
-    await fs.writeFile(caminhoDestinoAbs, contentOrigem);
+    await fs.copyFile(caminhoOrigemAbs, caminhoDestinoAbs);
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('erro ao sobrescrever arquivo', error);
+    console.error('Error when copying file', error);
   }
 }
 
